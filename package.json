@@ -1,0 +1,36 @@
+{
+  "name": "c3-chat-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.2",
+    "connect-mongo": "^2.0.1",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.3.14",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "react": "^16.2.0",
+    "react-dialog": "^1.0.2",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "2.1.1",
+    "socket.io": "^2.1.1",
+    "spectre.css": "^0.5.0"
+  },
+  "scripts": {
+    "start": "cd client && react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "api": "nodemon ./server/server.js",
+    "dev": "concurrently \"cd client && react-scripts start\" \"nodemon ./server/server.js\""
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.7"
+  }
+} 
