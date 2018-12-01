@@ -11,6 +11,9 @@ class Local extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+    }
   }
 
   handleChange(event) {
@@ -20,6 +23,10 @@ class Local extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.submitLocal(event);
+  }
+
+  handleClick(event) {
+    this.props.handleClick(event);
   }
 
   render() {
@@ -33,7 +40,7 @@ class Local extends Component {
                 <li><Input placeholder="password" handleChange={this.handleChange} value={this.props.password} /></li>
               </ul>
               <ul className="form-group inline-block fright">
-                <li><Button type="submit" value="login" /></li>
+                <li><Button type="submit" value="login" /></li> 
               </ul>
             </div>
           </form>
@@ -42,7 +49,7 @@ class Local extends Component {
               <li><Link to="/github"><Button value="use github" /></Link></li>
             </ul>
             <ul className="block">
-              <li><Link to="/signup"><Button value="don't have an account?" /></Link></li>
+              <li><Link to="/signup"><Button name="signup" value="don't have an account?" /></Link></li>
             </ul>
           </div>
         </div>

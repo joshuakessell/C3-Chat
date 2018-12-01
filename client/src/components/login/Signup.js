@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Link} from "react-router-dom";
 import Input from "./form/Input.js";
 import Button from './form/Button.js';
 
@@ -33,7 +34,7 @@ class Signup extends Component {
             <li><Input placeholder="email" handleChange={this.handleChange} value={this.props.email} /></li>
           </ul>
           <ul className="form-group inline-block">
-            <li><Button type="submit" value="sign up" /></li>
+            <li><Link to="/"><Button type="submit" value="sign up" /></Link></li>
           </ul>
         </form>
       <Button value="Sign up with Github" />

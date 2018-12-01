@@ -49,7 +49,7 @@ class App extends Component {
   render() {
     return (
       <div className="App center-text">
-        <C3 />
+        <C3 isLoggedIn={this.state.isLoggedIn} />
         <Route
           path="/"
           render={() =>
@@ -57,17 +57,11 @@ class App extends Component {
               <Login
                 updateUser={this.updateUser}
               />
-              ) : (
-              <Route
-                exact path="/"
-                render={() =>
-                <Dashboard
-            
-                />}
-              />
-            )
-          }
-        />
+            ) : (
+              <Dashboard
+                isLoggedIn={this.state.isLoggedIn}
+              />)}
+          />
       </div>
     );
   }

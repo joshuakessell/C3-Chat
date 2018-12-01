@@ -12,15 +12,19 @@ const PORT = process.env.PORT || 3001;
 
 // Define middleware here
 app.use(morgan('dev'))
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
 
 // Serve up static assets (usually on heroku)
-app.use(express.static(path.join(__dirname, 'client/build')));
-
-// Passport
-app.use(passport.initialize())
-app.use(passport.session()) // calls the deserializeUser
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  // Handle React routing, return all requests to React app
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 // Sessions
 app.use(
@@ -28,13 +32,17 @@ app.use(
     secret: 'millenium_falcon', //pick a random string to make the hash that is generated secure
     store: new MongoStore({ mongooseConnection: db }),
     resave: true, //required
-    saveUninitialized: true //required
+    saveUninitialized: false //required
   })
 )
 
+// Passport
+app.use(passport.initialize()) 
+app.use(passport.session()) // calls the deserializeUser
+
 // Add routes
-const user = require('./routes/user')
-app.use('/user', user)
+const user = require('./routes/user');
+app.use('/user', user);
 
 // Start the API server
 const server = app.listen(PORT, () => { 

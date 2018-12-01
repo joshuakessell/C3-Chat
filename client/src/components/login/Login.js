@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import Local from './Local.js';
 import Glogin from './Glogin.js';
 import Signup from './Signup.js';
@@ -15,13 +15,15 @@ class Login extends Component {
     this.submitLocal = this.submitLocal.bind(this);
     this.submitNewLocal = this.submitNewLocal.bind(this);
     this.useGithubSignup = this.useGithubSignup.bind(this);
+    this.handleSignup = this.handleSignup.bind(this);
 
     this.state = {
       username: "",
       password: "",
       firstname: "",
       lastname: "",
-      email: ""
+      email: "",
+      redirectTo: ""
     }
   }
 
@@ -35,31 +37,27 @@ class Login extends Component {
 
   submitNewLocal(event) {
     //request to server to add new user info
-    axios.post('/user', {
+    axios.post('/user/signup', {
       username: this.state.username,
       password: this.state.password,
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       email: this.state.email
-    })
+    }
       .then(response => {
         console.log(response)
-        if (!response.data.errmsg) {
-          console.log('successful signup')
-          this.setState({ //redirect to login page
-            redirectTo: '/'
-          })
-        } else {
-          console.log('username already taken')
+        if (response.status === 200) {
+          this.setState({redirectTo : "/"})
         }
-      }).catch(error => {
-        console.log('signup error: ')
-        console.log(error)
       })
-  }
+      .catch(error => {
+        console.log('signup error: ');
+        console.log(error);
+      })
+    )
+    }
 
   submitLocal(event) {
-    event.preventDefault();
     axios.post('/user/login', {
       username: this.state.username,
       password: this.state.password
@@ -67,20 +65,17 @@ class Login extends Component {
       .then(response => {
         console.log(response)
         if (response.status === 200) {
-          // update App.js state
+          // update App.js state  
           this.props.updateUser({
             isLoggedIn: true,
             username: response.data.username
           })
           // update the state to redirect to home
-          this.setState({
-            redirectTo: '/dashboard'
-          })
+          this.setState({redirectTo: '/dashboard'})
         }
       }).catch(error => {
         console.log('login error: ')
         console.log(error);
-
       })
   }
 
@@ -88,7 +83,15 @@ class Login extends Component {
     console.log("Create new from Github");
   }
 
+  handleSignup(event) {
+    this.setState({redirectTo: "/signup" })
+  }
+
   render() {
+    const {redirect} = this.state;
+    if (redirect){
+      return <Redirect to={this.state.redirectTo}/>
+    }
     return (
       <div className="center-text">
         <Switch>
@@ -98,22 +101,23 @@ class Login extends Component {
               <Local
                 onLoginChange={this.onLoginChange}
                 submitLocal={this.submitLocal}
+                handleClick={this.handleSignup}
               />}
           />
           <Route
             exact path="/signup"
             render={() =>
-                <Signup
-                  handleSubmit={this.submitNewLocal}
-                  onLoginChange={this.onLoginChange}
-                />
-              }
+              <Signup
+                handleSubmit={this.submitNewLocal}
+                onLoginChange={this.onLoginChange}
+              />
+            }
           />
           <Route
             exact path="/github"
             render={() =>
-                <Glogin
-                  handleSubmit={this.submitGithub}
+              <Glogin
+                handleSubmit={this.submitGithub}
               />
             }
           />

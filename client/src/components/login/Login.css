@@ -9,8 +9,15 @@ h1, h5 {
     text-align: center;
 }
 
+.nav {
+  float: left;
+  position: relative;
+  left: 10px;
+  bottom: 8px;
+}
+
 .title {
-  margin-top: 1em;
+  margin-top: 0.1em;
   margin-bottom: 2em;
 }
 
@@ -64,4 +71,9 @@ body {
 .strong {
   font-weight: bolder;
   color: black;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
 }
