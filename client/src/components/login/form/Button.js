@@ -1,13 +1,17 @@
 import React from "react";
+import {Route} from "react-router-dom";
 
-
-const Button = (props) => {
-
-  return (
+  const Button = (props) => (
     <div className="inline">
-      <button name={props.name} className="btn" onClick={props.useClick}>{props.value}</button>
+      <Route render={({ history }) => (
+        <button
+          type="button"
+          onClick={() => { history.push('/') }}>
+          {props.value}
+        </button>
+      )}
+      />
     </div>
   )
-}
 
 export default Button;

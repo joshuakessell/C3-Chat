@@ -26,11 +26,11 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "api": "nodemon ./server/server.js",
-    "dev": "concurrently \"cd client && react-scripts start\" \"nodemon ./server/server.js --ignore client\""
+    "dev": "concurrently \"cd client && react-scripts start\" \"nodemon ./server/server.js\""
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
     "nodemon": "^1.18.7"
   },
-    "proxy": "http://localhost:3001"
-} 
+  "proxy": "http://localhost:3000"
+}

@@ -1,10 +1,9 @@
 {
   "name": "c3-chat-app",
   "version": "0.1.0",
-  "proxy": "http://localhost:3000",
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "axios": "^0.18.0",
-    "bootstrap": "^4.1.3",
     "popper.js": "^1.14.5",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",

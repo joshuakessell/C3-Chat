@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import {Link} from "react-router-dom";
 import Input from "./form/Input.js";
 import Button from './form/Button.js';
 
@@ -10,15 +9,13 @@ class Signup extends Component {
     this.handleSubmit=this.handleSubmit.bind(this);
   }
 
-
-   
   handleChange = (event) => {
     this.props.onLoginChange({ [event.target.name]: event.target.value })
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.handleSubmit();
+    this.props.submitNewLocal(event);
   }
 
   render() {
@@ -34,7 +31,7 @@ class Signup extends Component {
             <li><Input placeholder="email" handleChange={this.handleChange} value={this.props.email} /></li>
           </ul>
           <ul className="form-group inline-block">
-            <li><Link to="/"><Button type="submit" value="sign up" /></Link></li>
+            <li><Button type="submit" value="sign up" /></li>
           </ul>
         </form>
       <Button value="Sign up with Github" />

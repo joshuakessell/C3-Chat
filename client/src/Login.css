@@ -1,12 +1,38 @@
 
+body {
+  background-image: url("./background.jpg");
+}
+
 ul, li {
   list-style-type: none;
   padding:0px;
   margin:0px;
 }
 
-h1, h5 {
+h1, h5, p {
     text-align: center;
+    color: white;
+    padding-top:5px;
+}
+
+input[type=text] {
+  border: none;        
+  padding: 4px 8px;
+  border-radius: 12px; 
+}
+input[type=text]:focus{
+  outline: none;      
+  box-shadow: 0 0 0 3px rgb(165, 248, 175); 
+}
+
+button[type=button] {
+  border: none;        
+  padding: 4px 8px;
+  border-radius: 12px; 
+}
+button[type=button]:focus{
+  outline: none;      
+  box-shadow: 0 0 0 3px rgb(165, 248, 175); 
 }
 
 .nav {
@@ -17,17 +43,29 @@ h1, h5 {
 }
 
 .title {
-  margin-top: 0.1em;
+  margin-top: 6em;
   margin-bottom: 2em;
+  color: white;
+}
+
+a:link {
+  color: white;
+  text-decoration: none;
+}
+
+a:visited {
+  color:whitesmoke;
+  text-decoration: none;
 }
 
 .outline {
-  border: 1px;
+  border: 2px;
   border-style: solid;
-  border-color: black;
+  border-color: rgb(25, 15, 83);
   display: inline-block;
   padding:10px;
-}
+  background-color: rgba(0, 0, 0, 0.4);
+} 
 
 .inline-block {
   display: inline-block;
@@ -36,10 +74,6 @@ h1, h5 {
 .fright {
   float: right;
   padding: 12px;
-}
-
-body {
-    background-color: #f7f7f9;
 }
 
 .form-group {

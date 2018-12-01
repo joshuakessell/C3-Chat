@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
 import Login from './components/login/Login.js';
-import C3 from './components/login/C3.js'
 import Dashboard from './components/dashboard/dashboard.js'
 import axios from 'axios';
 
 
 class App extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.getUser = this.getUser.bind(this)
     this.componentDidMount = this.componentDidMount.bind(this)
     this.updateUser = this.updateUser.bind(this)
@@ -49,19 +48,23 @@ class App extends Component {
   render() {
     return (
       <div className="App center-text">
-        <C3 isLoggedIn={this.state.isLoggedIn} />
-        <Route
-          path="/"
-          render={() =>
-            !this.state.isLoggedIn ? (
-              <Login
-                updateUser={this.updateUser}
-              />
-            ) : (
-              <Dashboard
-                isLoggedIn={this.state.isLoggedIn}
-              />)}
+        {!this.state.isLoggedIn ? (
+          <Route
+            path="/"
+            render={() =>
+            <Login
+              updateUser={this.updateUser}
+            />}
           />
+        ) : (
+          <Route
+            path="/dashboard"
+            render={() =>
+            <Dashboard
+            />}
+          />)
+        }
+      
       </div>
     );
   }

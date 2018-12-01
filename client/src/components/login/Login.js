@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { withRouter, Route, Switch } from 'react-router-dom'
 import Local from './Local.js';
 import Glogin from './Glogin.js';
 import Signup from './Signup.js';
-import './Login.css';
+import C3 from './C3.js';
 import axios from 'axios';
 
 
@@ -15,7 +15,8 @@ class Login extends Component {
     this.submitLocal = this.submitLocal.bind(this);
     this.submitNewLocal = this.submitNewLocal.bind(this);
     this.useGithubSignup = this.useGithubSignup.bind(this);
-    this.handleSignup = this.handleSignup.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
 
     this.state = {
       username: "",
@@ -23,8 +24,35 @@ class Login extends Component {
       firstname: "",
       lastname: "",
       email: "",
-      redirectTo: ""
+      redirectTo: null,
+      message: null
     }
+  }
+
+  componentDidMount = () => {
+    if (this.state.message) {
+      this.setState({ message: null })
+    }
+  }
+
+  handleLogin() {
+    this.props.history.push('/')
+  }
+
+  handleLogout(){
+    console.log('logging out')
+    axios.post('/user/logout').then(response => {
+      console.log(response.data)
+      if (response.status === 200) {
+        this.props.updateUser({
+          isLoggedIn: false,
+          username: null,
+        })
+        this.history.push('/')
+      }
+    }).catch(error => {
+      console.log('Logout error')
+    })
   }
 
   onLoginChange(data) {
@@ -35,9 +63,9 @@ class Login extends Component {
     console.log("Github Signup");
   }
 
-  submitNewLocal(event) {
+  submitNewLocal() {
     //request to server to add new user info
-    axios.post('/user/signup', {
+    axios.post('/user/signup/', {
       username: this.state.username,
       password: this.state.password,
       firstname: this.state.firstname,
@@ -47,7 +75,10 @@ class Login extends Component {
       .then(response => {
         console.log(response)
         if (response.status === 200) {
-          this.setState({redirectTo : "/"})
+          this.history.push('/')
+          this.setState({
+            message: "Signup successful. Please login now."
+          })
         }
       })
       .catch(error => {
@@ -57,7 +88,7 @@ class Login extends Component {
     )
     }
 
-  submitLocal(event) {
+  submitLocal() {
     axios.post('/user/login', {
       username: this.state.username,
       password: this.state.password
@@ -71,11 +102,12 @@ class Login extends Component {
             username: response.data.username
           })
           // update the state to redirect to home
-          this.setState({redirectTo: '/dashboard'})
+            this.history.push('/foo')
         }
       }).catch(error => {
         console.log('login error: ')
         console.log(error);
+        this.setState({message: "Login Unsuccessful"})
       })
   }
 
@@ -83,17 +115,10 @@ class Login extends Component {
     console.log("Create new from Github");
   }
 
-  handleSignup(event) {
-    this.setState({redirectTo: "/signup" })
-  }
-
   render() {
-    const {redirect} = this.state;
-    if (redirect){
-      return <Redirect to={this.state.redirectTo}/>
-    }
     return (
       <div className="center-text">
+        <C3 isLoggedIn={this.state.isLoggedIn} login={this.handleLogin} logout={this.handleLout} />
         <Switch>
           <Route
             exact path="/"
@@ -101,7 +126,7 @@ class Login extends Component {
               <Local
                 onLoginChange={this.onLoginChange}
                 submitLocal={this.submitLocal}
-                handleClick={this.handleSignup}
+                message={this.state.message}
               />}
           />
           <Route
@@ -110,6 +135,7 @@ class Login extends Component {
               <Signup
                 handleSubmit={this.submitNewLocal}
                 onLoginChange={this.onLoginChange}
+                message={this.state.message}
               />
             }
           />
@@ -118,6 +144,7 @@ class Login extends Component {
             render={() =>
               <Glogin
                 handleSubmit={this.submitGithub}
+                message={this.state.message}
               />
             }
           />
@@ -127,5 +154,5 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);
 

@@ -5,17 +5,18 @@ const User = require('../database/models/user');
 
 //Signup
 router.post('/user/signup', (req, res) => {
-  const { username, password, firstname, lastname, email } = req.body
-  User.findOne({ username: username }, (err, user) => {
+  newUser = req.body;
+  console.log(newUser);
+  User.findOne({ username: newUser.username }, (err, user) => {
     if (err) {
       console.log('User.js post error: ', err)
     } else if (user) {
       res.json({
-        error: `Sorry, laready a user with the username: ${username}`
+        error: `Sorry, already a user with the username: ${username}`
       })
     }
     else {
-      const newUser = new User({
+      newUser = new User({
         username: username,
         password: password,
         firstname: firstname,

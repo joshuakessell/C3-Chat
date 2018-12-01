@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Input from './form/Input.js';
 import Button from './form/Button.js';
-import './Login.css';
 
 
 class Local extends Component {
@@ -11,9 +10,6 @@ class Local extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.state = {
-    }
   }
 
   handleChange(event) {
@@ -22,22 +18,19 @@ class Local extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.submitLocal(event);
-  }
-
-  handleClick(event) {
-    this.props.handleClick(event);
+    this.props.submitLocal();
   }
 
   render() {
     return (
       <div>
         <div className="outline">
+        <h5>Login</h5>
           <form onSubmit={this.handleSubmit}>
-            <div className="inline-block">
+            <div className="inline-block has-icon-left">
               <ul className="form-group inline-block">
-                <li><Input placeholder="username" handleChange={this.handleChange} value={this.props.username} /></li>
-                <li><Input placeholder="password" handleChange={this.handleChange} value={this.props.password} /></li>
+                <li><Input className="form-group" placeholder="username" handleChange={this.handleChange} value={this.props.username} /></li>
+                <li><Input className="form-group" placeholder="password" handleChange={this.handleChange} value={this.props.password} /></li>
               </ul>
               <ul className="form-group inline-block fright">
                 <li><Button type="submit" value="login" /></li> 

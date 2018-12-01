@@ -1,51 +1,35 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
-import axios from 'axios';
 import Button from './form/Button';
 
 class C3 extends Component {
-  constructor() {
-    super()
-    this.logout = this.logout.bind(this)
+  constructor(props) {
+    super(props)
+    this.logout = this.logout.bind(this);
+    this.login = this.login.bind(this);
   }
 
   logout() {
-    console.log('logging out')
-    axios.post('/user/logout').then(response => {
-      console.log(response.data)
-      if (response.status === 200) {
-        this.props.updateUser({
-          isLoggedIn: false,
-          username: null
-        })
-        this.setState({
-          redirectTo: '/'
-        })
-      }
-    }).catch(error => {
-      console.log('Logout error')
-    })
+    this.props.logoutS();
   }
 
-  renderRedirect = () => {
-    if (this.state.redirectTo === '/') {
-      return <Redirect to={this.state.redirectTo} />
-    }
+  login() {
+    this.props.login();
   }
+
 
     render(){
       return (
         <div>
           <div className='title'>
-            <Link to="/" className="btn btn-link btn-lg">C3</Link>
+            <h1>C3</h1><h5 className="inline">Communicate. Collaborate. Create.</h5>
             <br />
             <div className="nav">
               {this.props.isLoggedIn ?
                 <Button value="logout" useClick={this.logout} /> :
-                <Link to="/" className="btn btn-link text-primary" replace={true}>Login</Link>}
+                <Button value="login" useClick={this.login} />}
             </div>
-            Communicate. Collaborate. Create.
-          <hr />
+            
+
           </div>
         </div>
       )
