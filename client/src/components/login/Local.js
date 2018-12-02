@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Input from './form/Input.js';
 import Button from './form/Button.js';
 
@@ -18,7 +18,7 @@ class Local extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.submitLocal();
+    this.props.submitNewLocal();
   }
 
   render() {
@@ -50,4 +50,4 @@ class Local extends Component {
     )
   }
 }
-export default Local;
+export default withRouter(Local);

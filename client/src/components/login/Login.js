@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import Local from './Local.js';
 import Glogin from './Glogin.js';
 import Signup from './Signup.js';
@@ -16,7 +16,6 @@ class Login extends Component {
     this.submitNewLocal = this.submitNewLocal.bind(this);
     this.useGithubSignup = this.useGithubSignup.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
 
     this.state = {
       username: "",
@@ -33,10 +32,6 @@ class Login extends Component {
     if (this.state.message) {
       this.setState({ message: null })
     }
-  }
-
-  handleLogin() {
-    this.props.history.push('/')
   }
 
   handleLogout(){
@@ -65,17 +60,17 @@ class Login extends Component {
 
   submitNewLocal() {
     //request to server to add new user info
-    axios.post('/user/signup/', {
+    axios.post('/user/signup', {
       username: this.state.username,
       password: this.state.password,
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       email: this.state.email
-    }
+    })
       .then(response => {
         console.log(response)
         if (response.status === 200) {
-          this.history.push('/')
+            this.history.push('/')
           this.setState({
             message: "Signup successful. Please login now."
           })
@@ -85,8 +80,8 @@ class Login extends Component {
         console.log('signup error: ');
         console.log(error);
       })
-    )
     }
+    
 
   submitLocal() {
     axios.post('/user/login', {
@@ -118,7 +113,7 @@ class Login extends Component {
   render() {
     return (
       <div className="center-text">
-        <C3 isLoggedIn={this.state.isLoggedIn} login={this.handleLogin} logout={this.handleLout} />
+        <C3 isLoggedIn={this.state.isLoggedIn} logout={this.handleLogout} />
         <Switch>
           <Route
             exact path="/"
@@ -133,7 +128,7 @@ class Login extends Component {
             exact path="/signup"
             render={() =>
               <Signup
-                handleSubmit={this.submitNewLocal}
+                submitNewLocal={this.submitNewLocal}
                 onLoginChange={this.onLoginChange}
                 message={this.state.message}
               />
@@ -154,5 +149,5 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+export default Login;
 

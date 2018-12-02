@@ -2,13 +2,37 @@ const express = require("express");
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const session = require('express-session')
-const db = require('./database') 
-const MongoStore = require('connect-mongo')(session)
+const mongoose = require('mongoose')
+const MongoDBStore = require('connect-mongodb-session')(session);
 const passport = require('./passport');
 const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 3001;
 
+mongoose.connect('mongodb://localhost/c3', { useNewUrlParser: true });
+
+const store = new MongoDBStore({
+  uri: 'mongodb://localhost:27017/c3',
+  collection: 'mySessions'
+})
+
+store.on('error', function (error) {
+  assert.ifError(error);
+  assert.ok(false);
+});
+
+// Sessions
+app.use(
+  session({
+    secret: 'millenium_falcon', //pick a random string to make the hash that is generated secure
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+      },
+    store: store,
+    resave: true, //required
+    saveUninitialized: true //required
+  })
+)
 
 // Define middleware here
 app.use(morgan('dev'))
@@ -17,24 +41,14 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 
 // Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === 'production') {
+//if (process.env.NODE_ENV === 'production') {
   // Serve any static files
-  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.use(express.static(path.join(__dirname, '../client')));
   // Handle React routing, return all requests to React app
   app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client'));
   });
-}
-
-// Sessions
-app.use(
-  session({
-    secret: 'millenium_falcon', //pick a random string to make the hash that is generated secure
-    store: new MongoStore({ mongooseConnection: db }),
-    resave: true, //required
-    saveUninitialized: false //required
-  })
-)
+//}
 
 // Passport
 app.use(passport.initialize()) 

@@ -22,7 +22,7 @@ class Signup extends Component {
     return (
       <div className="center">
         <p>Local Signup:</p>
-        <form onSubmit={this.handleSubmit} className="form-group">
+        <form className="form-group">
           <ul className="form-group">
             <li><Input placeholder="username" handleChange={this.handleChange} value={this.props.username} /></li>
             <li><Input placeholder="password" handleChange={this.handleChange} value={this.props.password} /></li>
@@ -31,7 +31,7 @@ class Signup extends Component {
             <li><Input placeholder="email" handleChange={this.handleChange} value={this.props.email} /></li>
           </ul>
           <ul className="form-group inline-block">
-            <li><Button type="submit" value="sign up" /></li>
+            <li><Button type="submit" useClick={this.handleSubmit}  value="sign up" /></li>
           </ul>
         </form>
       <Button value="Sign up with Github" />

@@ -1,19 +1,16 @@
 import React, { Component } from "react";
+import {Link} from 'react-router-dom';
 import Button from './form/Button';
 
 class C3 extends Component {
   constructor(props) {
     super(props)
     this.logout = this.logout.bind(this);
-    this.login = this.login.bind(this);
   }
 
-  logout() {
-    this.props.logoutS();
-  }
-
-  login() {
-    this.props.login();
+  logout(event) {
+    event.preventDefault();
+    this.props.logout();
   }
 
 
@@ -25,8 +22,8 @@ class C3 extends Component {
             <br />
             <div className="nav">
               {this.props.isLoggedIn ?
-                <Button value="logout" useClick={this.logout} /> :
-                <Button value="login" useClick={this.login} />}
+                <Button value="logout" useClick={this.logout} target="/" /> :
+                <Link to="/"><Button value="login" /></Link>}
             </div>
             
 

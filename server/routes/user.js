@@ -1,7 +1,21 @@
-const express = require('express')
+const express = require('express');
 const router = express.Router()
 const passport = require('../passport')
 const User = require('../database/models/user');
+
+
+router.post('/user/signup', (req, res) => {
+  let newUser = req.body;  
+  newUser = new User({
+    username: username,
+    password: password,
+    firstname: firstname,
+    lastname: lastname,
+    email: email
+    })
+  newUser.save();
+  res.status(201).send(newUser)
+})
 
 //Signup
 router.post('/user/signup', (req, res) => {
