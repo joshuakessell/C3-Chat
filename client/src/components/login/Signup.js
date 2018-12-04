@@ -26,8 +26,6 @@ class Signup extends Component {
           <ul className="form-group">
             <li><Input placeholder="username" handleChange={this.handleChange} value={this.props.username} /></li>
             <li><Input placeholder="password" handleChange={this.handleChange} value={this.props.password} /></li>
-            <li><Input placeholder="firstname" handleChange={this.handleChange} value={this.props.firstname} /></li>
-            <li><Input placeholder="lastname" handleChange={this.handleChange} value={this.props.lastname} /></li>
             <li><Input placeholder="email" handleChange={this.handleChange} value={this.props.email} /></li>
           </ul>
           <ul className="form-group inline-block">

@@ -1,27 +1,48 @@
+
+module.exports = function (app) {
+  
 const express = require('express');
 const router = express.Router()
 const passport = require('../passport')
 const User = require('../database/models/user');
 
+// middleware to use for all requests
+router.use(function (req, res, next) {
+  console.log('===API CALL===');
+  next(); // make sure we go to the next routes and don't stop here
+});
 
-router.post('/user/signup', (req, res) => {
+
+router.post('/signup', (req, res) => {
   let newUser = req.body;  
   newUser = new User({
     username: username,
     password: password,
-    firstname: firstname,
-    lastname: lastname,
     email: email
     })
   newUser.save();
   res.status(201).send(newUser)
 })
 
+
+router.post('/signup', (req, res) => {
+  // create a user (accessed at POST http://localhost:8080/api/signup)
+  let user = new User();      // create a new instance of the User model
+  user = req.body;  // set the user information 
+
+  // save the user and check for errors
+  user.save(function (err) {
+    if (err)
+      res.send(err);
+    res.json({ message: 'User created!' });
+  });
+});
+
 //Signup
-router.post('/user/signup', (req, res) => {
-  newUser = req.body;
-  console.log(newUser);
-  User.findOne({ username: newUser.username }, (err, user) => {
+router.post('/signup', (req, res) => {
+  let checkUser = req.body;
+  console.log(checkUser);
+  User.findOne({ username: checkUser.username }, (err, user) => {
     if (err) {
       console.log('User.js post error: ', err)
     } else if (user) {
@@ -33,8 +54,6 @@ router.post('/user/signup', (req, res) => {
       newUser = new User({
         username: username,
         password: password,
-        firstname: firstname,
-        lastname: lastname,
         email: email
       })
       newUser.save()
@@ -51,7 +70,7 @@ router.post('/user/signup', (req, res) => {
 
 
   //Sign in and authenticate
-  router.post('/user/login', (req, res, next) => {
+  router.post('/login', (req, res, next) => {
     console.log('routes/user.js, login, req.body: ');
     console.log(req.body)
     next()
@@ -66,7 +85,7 @@ router.post('/user/signup', (req, res) => {
   )
 
   //Grab current/previous logged in user session if available.
-  router.get('/user', (req, res, next) => {
+  router.get('/', (req, res, next) => {
     console.log('===== user!!======')
     console.log(req.user)
     if (req.user) {
@@ -77,7 +96,7 @@ router.post('/user/signup', (req, res) => {
   })
 
   // Log out
-  router.post('/user/logout', (req, res) => {
+  router.post('/logout', (req, res) => {
     if (req.user) {
       req.logout()
       res.send({ msg: 'logging out' })
@@ -86,4 +105,6 @@ router.post('/user/signup', (req, res) => {
     }
   })
 
-  module.exports = router
+
+
+  }

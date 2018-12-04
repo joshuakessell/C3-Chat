@@ -20,8 +20,6 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      firstname: "",
-      lastname: "",
       email: "",
       redirectTo: null,
       message: null
@@ -59,12 +57,11 @@ class Login extends Component {
   }
 
   submitNewLocal() {
+    console.log('here');
     //request to server to add new user info
-    axios.post('/user/signup', {
+    axios.post('/api/signup', {
       username: this.state.username,
       password: this.state.password,
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
       email: this.state.email
     })
       .then(response => {
@@ -84,7 +81,7 @@ class Login extends Component {
     
 
   submitLocal() {
-    axios.post('/user/login', {
+    axios.post('/api/login', {
       username: this.state.username,
       password: this.state.password
     })

@@ -1,67 +1,54 @@
-const express = require("express");
-const bodyParser = require('body-parser')
+// BASE SETUP
+// =============================================================================
+
+// call the packages we need
+var express = require('express');        // call express
+var app = express();                 // define our app using express
+var bodyParser = require('body-parser');
 const morgan = require('morgan')
+
+const dbConnection = require('./database')
 const session = require('express-session')
-const mongoose = require('mongoose')
-const MongoDBStore = require('connect-mongodb-session')(session);
+const MongoStore = require('connect-mongo')(session)
+
 const passport = require('./passport');
-const app = express();
-const path = require('path');
-const PORT = process.env.PORT || 3001;
 
-mongoose.connect('mongodb://localhost/c3', { useNewUrlParser: true });
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(morgan('dev'))
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-const store = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/c3',
-  collection: 'mySessions'
-})
+var PORT = process.env.PORT || 8080;        // set our port
 
-store.on('error', function (error) {
-  assert.ifError(error);
-  assert.ok(false);
-});
-
-// Sessions
+//sessions
 app.use(
   session({
-    secret: 'millenium_falcon', //pick a random string to make the hash that is generated secure
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
-      },
-    store: store,
-    resave: true, //required
-    saveUninitialized: true //required
+    secret: 'mr-potato-head',
+    store: new MongoStore({ mongooseConnection: dbConnection }),
+    resave: false,
+    saveUninitialized: false
   })
 )
 
-// Define middleware here
-app.use(morgan('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-
-
-// Serve up static assets (usually on heroku)
-//if (process.env.NODE_ENV === 'production') {
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, '../client')));
-  // Handle React routing, return all requests to React app
-  app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client'));
-  });
-//}
-
 // Passport
-app.use(passport.initialize()) 
-app.use(passport.session()) // calls the deserializeUser
+app.use(passport.initialize())
+app.use(passport.session()) // calls serializeUser and deserializeUser
+//serialize saves user id to req.session.passport.user = {id:'...'}
+//deserialize chekcs to see if user is saved in db, and if found it assigns
+//it to the request as req.user = {user object}
 
-// Add routes
-const user = require('./routes/user');
-app.use('/user', user);
+const router = require('./routes/router');
 
-// Start the API server
-const server = app.listen(PORT, () => { 
- console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
-}); 
+// REGISTER OUR ROUTES -------------------------------
+// all of our routes will be prefixed with /api
+app.use('/api', router);
+
+
+// Starting Server 
+const server = app.listen(PORT, () => {
+  console.log(`Our app is running on port ${PORT}`);
+});
 
 
 // Chatroom
